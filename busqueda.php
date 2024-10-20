@@ -1,42 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BBDD</title>
 </head>
 <body>
-    
-<?php 
-$server = "localhost";
-$user = "root";
-$password = "";
-$database = "jon";
-$con = new mysqli($server, $user, $password, $database);
-if ($con->connect_error) {  
-    die("Error al iniciar");
-}
-?>
-<h1>Busqueda en BD JMH</h1>
-<form method="get" action="">
+
+<?php require('connection.php'); ?>
+
+<h1>Busqueda en BD JonDatabase</h1>
+  <form method="get" action="">
     <strong>Nombre: </strong>
-    <input type="text" name="busqueda" size="20"> <br><br>>
+    <input type="text" name="busqueda" size="20">
+    <br>
     <input type="submit" name="enviar" value="Buscar">
-</form> 
-<br><br>
+  </form>
+  <br>
 
+<a>Resultado: </a>
 
-<a>RESULTADO: </a>
-
-<?php 
-if (isset($GET['enviar'])) {
-    $busqueda = $GET['busqueda'];
-    $consulta = $con->query("SELECT nombre, apellido FROM usuarios
-    WHERE nombre like '%$busqueda'");
-    while ($row = $consulta->fetch_array()) {
-        echo"".$row['nombre']." ".$row['apellido']. '<br>'; 
-}
-}
+  <?php
+  if (isset($_GET['enviar'])) {
+    $busqueda = $_GET['busqueda'];
+    $consulta = $con->query("SELECT NOMBRE, APELLIDO, CURSO FROM ALUMNOS WHERE NOMBRE LIKE '%$busqueda%'");
+    if ($consulta->num_rows > 0) {
+        while ($row = $consulta->fetch_array()) {
+            echo $row['NOMBRE'] . ' ' . $row['APELLIDO'] . ' ' . $row['CURSO'];
+        }
+    } else {
+        echo "No se encontraron resultados para '$busqueda'.";
+    }
+  }
 ?>
+
 </body>
 </html>
